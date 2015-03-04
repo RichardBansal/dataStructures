@@ -3,12 +3,19 @@ function LinkedList(){
 	this.tail = undefined;
 }
 
-LinkedList.prototype.addToTail = function(value){
-	if((this.tail == undefined)&&(this.head === undefined)){
+LinkedList.prototype.check = function(value){
+	if (this.tail == undefined && this.head == undefined){
 		this.tail = new Node(value);
 		this.head = this.tail;
+		return true;
+	}else{
+		return false;
 	}
-	else{
+}
+
+LinkedList.prototype.addToTail = function(value){
+	if(!this.check(value))
+	{
 		var old_tail  = this.tail;
 		var new_tail = new Node(value);
 
@@ -22,11 +29,8 @@ LinkedList.prototype.addToTail = function(value){
 }
 
 LinkedList.prototype.addToHead = function(value){
-	if((this.tail == undefined)&&(this.head === undefined)){
-		this.tail = new Node(value);
-		this.head = this.tail;
-	}
-	else{
+	if(!this.check(value))
+	{
 		var old_head  = this.head;
 		var new_head = new Node(value);
 
@@ -36,6 +40,10 @@ LinkedList.prototype.addToHead = function(value){
 		this.head = new_head;
 	}
 
+}
+
+LinkedList.prototype.removeCheck = function(){
+	
 }
 
 LinkedList.prototype.removeHead = function() {
@@ -79,7 +87,16 @@ LinkedList.prototype.removeTail = function(){
 	}
 }
 
-LinkedList.prototype.search = function() {};
+LinkedList.prototype.search = function(argument, start) {
+	start = start || this.head;
+	if (typeof argument == "function"){
+		if(argument(start)){return start.value;}
+	}else{
+		if (argument == start.value){return start.value;}
+	}
+	if (start.next == null){return null;}
+	return this.search(argument, start.next);
+};
 
 function Node(value){
 	this.next = null
